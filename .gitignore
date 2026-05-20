@@ -1,0 +1,7 @@
+# Ignore all Terraform temporary directories and state files in any subfolder
+**/.terraform/
+**/*.tfstate
+**/*.tfstate.*
+**/crash.log
+**/*.tfvars
+**/*.tfvars.json
