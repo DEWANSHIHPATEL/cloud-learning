@@ -6,6 +6,15 @@ terraform {
       version = "~> 5.0"
     }
   }
+
+  # This block configures your remote state storage and locking
+  backend "s3" {
+    bucket         = "dewanshi-tf-state-bucket" # <-- Change this to your actual S3 bucket name
+    key            = "day2/multi-tier/terraform.tfstate"
+    region         = "us-east-1"
+    dynamodb_table = "terraform-state-locks"
+    encrypt        = true
+  }
 }
 
 provider "aws" {
