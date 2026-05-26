@@ -1,18 +1,24 @@
 module "vpc" {
-  source      = "./modules/vpc"
-  environment = var.environment
+  source = "./modules/vpc"
 }
 
 module "compute" {
-  source      = "./modules/compute"
-  environment = var.environment
-  vpc_id      = module.vpc.vpc_id
-  subnet_id   = module.vpc.public_subnet_id
+  source    = "./modules/compute"
+  vpc_id    = module.vpc.vpc_id
+  subnet_id = module.vpc.public_subnet_id
 }
 
 module "db" {
-  source      = "./modules/db"
-  environment = var.environment
-  vpc_id      = module.vpc.vpc_id
-  subnet_ids  = [module.vpc.private_subnet_id, module.vpc.private_subnet_b_id]
+  source     = "./modules/db"
+  vpc_id     = module.vpc.vpc_id
+  # Passing both unique subnets here
+  subnet_ids = [module.vpc.private_subnet_id, module.vpc.private_subnet_b_id]
+}
+
+module "eks" {
+  source       = "./modules/eks"
+  cluster_name = "day3-cluster"
+  vpc_id       = module.vpc.vpc_id
+  # Passing the list containing both subnets
+  subnet_ids   = module.vpc.private_subnets
 }
